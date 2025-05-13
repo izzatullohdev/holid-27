@@ -1,0 +1,13 @@
+@import "tailwindcss";
+body {
+  background-color: rgb(237, 237, 237);
+  color: #333 !important;
+}
+.header {
+  background-color: transparent !important;
+}
+.ant-layout,
+.ant-layout-footer,
+.ant-layout-header {
+  background-color: transparent !important;
+}
