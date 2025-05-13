@@ -1,75 +1,78 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useEffect, useState } from "react"
-import { Card, Typography, Button, Tag, Spin } from "antd"
-import { GithubOutlined, LinkOutlined } from "@ant-design/icons"
-import { motion } from "framer-motion"
+import type React from "react";
+import { useEffect, useState } from "react";
+import { Card, Typography, Button, Tag, Spin } from "antd";
+import { GithubOutlined, LinkOutlined } from "@ant-design/icons";
+import { motion } from "framer-motion";
 
-const { Title, Paragraph } = Typography
+const { Title, Paragraph } = Typography;
 
 interface Project {
-  id: number
-  title: string
-  description: string
-  technologies: string[]
-  githubLink?: string
-  liveDemoLink?: string
-  createdAt: string
-  updatedAt: string
+  id: number;
+  title: string;
+  description: string;
+  technologies: string[];
+  githubLink?: string;
+  liveDemoLink?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const Projects: React.FC = () => {
-  const [projects, setProjects] = useState<Project[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string | null>(null)
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/user/projects")
+        const response = await fetch(
+          "https://holid-27.onrender.com/api/user/projects"
+        );
 
         if (!response.ok) {
-          throw new Error("Failed to fetch projects")
+          throw new Error("Failed to fetch projects");
         }
 
-        const data = await response.json()
-        console.log("API Response:", data) // Log the response to see its structure
+        const data = await response.json();
+        console.log("API Response:", data); // Log the response to see its structure
 
         // Check if data is an array
         if (Array.isArray(data)) {
-          setProjects(data)
+          setProjects(data);
         }
         // Check if data has a property that is an array (common API pattern)
         else if (data && typeof data === "object") {
           // Try common property names that might contain the projects array
-          const projectsArray = data.projects || data.data || data.items || data.results || []
+          const projectsArray =
+            data.projects || data.data || data.items || data.results || [];
           if (Array.isArray(projectsArray)) {
-            setProjects(projectsArray)
+            setProjects(projectsArray);
           } else {
             // If we can't find an array, create an array with the single object if it looks like a project
-            setProjects(data.title ? [data] : [])
+            setProjects(data.title ? [data] : []);
           }
         } else {
-          setProjects([])
+          setProjects([]);
         }
       } catch (err) {
-        setError("Loyihalarni yuklashda xatolik yuz berdi")
-        console.error("Error fetching projects:", err)
+        setError("Loyihalarni yuklashda xatolik yuz berdi");
+        console.error("Error fetching projects:", err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchProjects()
-  }, [])
+    fetchProjects();
+  }, []);
 
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
         <Spin size="large" tip="Yuklanmoqda..." />
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -77,7 +80,7 @@ const Projects: React.FC = () => {
       <div className="text-center text-red-500 py-10">
         <Title level={4}>{error}</Title>
       </div>
-    )
+    );
   }
 
   return (
@@ -103,7 +106,9 @@ const Projects: React.FC = () => {
                 <Title level={4} className="!text-gray-700">
                   {project.title}
                 </Title>
-                <Paragraph className="text-gray-600">{project.description}</Paragraph>
+                <Paragraph className="text-gray-600">
+                  {project.description}
+                </Paragraph>
 
                 <div className="mt-3 flex flex-wrap">
                   {Array.isArray(project.technologies)
@@ -151,7 +156,7 @@ const Projects: React.FC = () => {
         )}
       </div>
     </motion.div>
-  )
-}
+  );
+};
 
-export default Projects
+export default Projects;

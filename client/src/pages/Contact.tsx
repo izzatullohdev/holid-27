@@ -26,7 +26,7 @@ const Contact: React.FC = () => {
       }
 
       // Send data to the API endpoint
-      const response = await fetch("http://localhost:3000/api/user/contacts", {
+      const response = await fetch("https://holid-27.onrender.com/api/user/contacts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

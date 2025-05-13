@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState, useEffect } from "react"
-import { Card, Typography, Button, Image } from "antd"
-import { EyeOutlined } from "@ant-design/icons"
-import { motion } from "framer-motion"
+import type React from "react";
+import { useState, useEffect } from "react";
+import { Card, Typography, Button, Image } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
+import { motion } from "framer-motion";
 
-const { Title, Text } = Typography
+const { Title, Text } = Typography;
 
 interface Certificate {
-  title: string
-  info: string
-  certificateLink: string
-  image?: string
+  title: string;
+  info: string;
+  certificateLink: string;
+  image?: string;
 }
 
 // Parent container uchun variantlar
@@ -22,7 +22,7 @@ const containerVariants = {
     opacity: 1,
     transition: { staggerChildren: 0.2 }, // 0.2 soniyada bitta element chiqadi
   },
-}
+};
 
 // Har bir sertifikat uchun animatsiya
 const itemVariants = {
@@ -32,46 +32,48 @@ const itemVariants = {
     y: 0,
     transition: { duration: 0.5 },
   },
-}
+};
 
 const Certificates: React.FC = () => {
-  const [certificates, setCertificates] = useState<Certificate[]>([])
-  const [loading, setLoading] = useState(true)
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCertificates = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/user/certificates")
+        const response = await fetch(
+          "https://holid-27.onrender.com/api/user/certificates"
+        );
         if (!response.ok) {
-          throw new Error("Network response was not ok")
+          throw new Error("Network response was not ok");
         }
-        const data = await response.json()
+        const data = await response.json();
 
         if (Array.isArray(data)) {
-          setCertificates(data)
-        }
-        else if (data && typeof data === "object") {
-          const certificatesArray = data.certificates || data.data || data.results || []
+          setCertificates(data);
+        } else if (data && typeof data === "object") {
+          const certificatesArray =
+            data.certificates || data.data || data.results || [];
           if (Array.isArray(certificatesArray)) {
-            setCertificates(certificatesArray)
+            setCertificates(certificatesArray);
           } else {
-            console.error("Unexpected API response format:", data)
-            setCertificates([])
+            console.error("Unexpected API response format:", data);
+            setCertificates([]);
           }
         } else {
-          console.error("Unexpected API response format:", data)
-          setCertificates([])
+          console.error("Unexpected API response format:", data);
+          setCertificates([]);
         }
       } catch (error) {
-        console.error("Error fetching certificates:", error)
-        setCertificates([])
+        console.error("Error fetching certificates:", error);
+        setCertificates([]);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchCertificates()
-  }, [])
+    fetchCertificates();
+  }, []);
 
   return (
     <motion.div
@@ -129,7 +131,7 @@ const Certificates: React.FC = () => {
         )}
       </motion.div>
     </motion.div>
-  )
-}
+  );
+};
 
-export default Certificates
+export default Certificates;
